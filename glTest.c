@@ -26,6 +26,46 @@ void init(void)
    glShadeModel(GL_FLAT);
 }
 
+
+void pyramid(float x_s ,float y_s,float z_s,float x,float y,float z,float x_a,float y_a,float z_a)
+{
+glPushMatrix();
+glColor3f(1,1,1);
+glTranslatef(x,y,z);
+glRotatef(y_a,0,1,0);
+glRotatef(z_a,0,0,1);
+glRotatef(x_a,1,0,0);
+glScalef(x_s,y_s,z_s);
+glBegin( GL_TRIANGLES );
+
+
+glVertex3f( 0.0f, 1.f, 0.0f );
+glVertex3f( -1.0f, -1.0f, 1.0f );
+glVertex3f( 1.0f, -1.0f, 1.0f);
+
+glVertex3f( 0.0f, 1.0f, 0.0f);
+glVertex3f( -1.0f, -1.0f, 1.0f);
+glVertex3f( 0.0f, -1.0f, -1.0f);
+
+
+glVertex3f( 0.0f, 1.0f, 0.0f);
+glVertex3f( 0.0f, -1.0f, -1.0f);
+glVertex3f( 1.0f, -1.0f, 1.0f);
+
+glVertex3f( -1.0f, -1.0f, 1.0f);
+glVertex3f( 0.0f, -1.0f, -1.0f);
+glVertex3f( 1.0f, -1.0f, 1.0f);
+
+
+glEnd();
+glPopMatrix();
+
+}
+
+
+
+
+
 void display(void)
 {
 
@@ -42,13 +82,20 @@ void display(void)
    glRotatef(angles[2], 1.0, 0.0, 0.0);
    glRotatef(angles[1], 0.0, 1.0, 0.0);
 
+
+  pyramid(.1,.1,.1,2.5,0,0,0,0,-90);
+  pyramid(.1,.1,.1,-2.5,0,0,0,0,90);
+  pyramid(.1,.1,.1,0,2.5,0,0,0,0);
+  pyramid(.1,.1,.1,0,-2.5,0,0,0,180);
+  pyramid(.1,.1,.1,0,0,2.5,90,0,0);
+  pyramid(.1,.1,.1,0,0,-2.5,-90,0,00);
   
   glPushMatrix();
   glColor3f(0,0,1);
   glRotatef(90.0,1,0,0);
   glutWireSphere(2,20,20);
   glPopMatrix();  
-
+  
 
 
    glBegin(GL_LINE_LOOP);
@@ -65,9 +112,6 @@ void display(void)
    }
  
    glEnd();
-
-
-
 
 
   glBegin(GL_LINES);
@@ -352,9 +396,12 @@ static void motion(int x, int y)
 
 
 int main(int argc, char **argv)
-{  T1=atoi(argv[2]);
+{  
+  
+   T1=atoi(argv[2]);
    T2=atoi(argv[3]); 
    angle3= atoi(argv[1]);
+   
    time=-T1 * log(1-(cos(atoi(argv[1])*(3.141592/180.0  ))));
    reset=angle3; 
 
