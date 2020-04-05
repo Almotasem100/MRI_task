@@ -11,7 +11,9 @@ float m=0;
 float a=0;
 char flag=0;
 float time=0.0;
-float T=0;
+float T1=0;
+float T2=0;
+float x_y=2.0;
 GLfloat angle = 0.0;   /* in degrees */
 GLfloat angle2 = 0.0;
 GLfloat angle3= 0.0;
@@ -41,11 +43,11 @@ void display(void)
    glRotatef(angles[1], 0.0, 1.0, 0.0);
 
   
-  // glPushMatrix();
-  // glColor3f(0,0,1);
-  // glRotatef(90.0,1,0,0);
-  // glutWireSphere(2,20,20);
-  // glPopMatrix();  
+  glPushMatrix();
+  glColor3f(0,0,1);
+  glRotatef(90.0,1,0,0);
+  glutWireSphere(2,20,20);
+  glPopMatrix();  
 
 
 
@@ -56,7 +58,7 @@ void display(void)
       float degInRad = 3.141592/180;
       glColor3f(.5,.7,0);
 
-        a=2*(1-exp(-i*10/T));
+        a=2*(1-exp(-i*10/T1));
         a=acos(a/2.0)*(180.0/3.141592);
       // glVertex3f(cos(degInRad)*2,i,sin(degInRad)*2);
       glVertex3f(2*sin(a *degInRad)*cos(((5*j)%360)*degInRad),2*cos(a*degInRad) ,2*sin(a*degInRad)*sin(((5*j)%360)*degInRad) );
@@ -111,11 +113,26 @@ void display(void)
   glEnd();
 
 
-  glRotatef((GLfloat)angles[0],0.0,1.0,0.0);
-  glRotatef((GLfloat)angle3,0.0,0.0,1.0);
-  
 
-  
+  glRotatef((GLfloat)angles[0],0.0,1.0,0.0);
+
+  glPushMatrix();
+  glTranslatef(x_y,0,0);
+  glColor3f(0,1,0);
+  glutWireSphere(.1,20,20);
+  glPopMatrix();  
+
+
+  glBegin(GL_LINES);
+  glPushMatrix();
+  glColor3f(0,1,0);
+  glVertex3d(0,0,0);
+  glVertex3d(x_y,0,0);
+  glPopMatrix();
+  glEnd();
+
+
+  glRotatef((GLfloat)angle3,0.0,0.0,1.0);
   
 
   glPushMatrix();
@@ -165,16 +182,20 @@ void decay(float x)
 
 if (flag==0){
   if (angle3 > 3  ){
-  m=2*(1-exp(-x/T));
+  m=2*(1-exp(-x/T1));
   angle3=acos(m/2.0)*(180.0/3.141592);
+  
+  x_y=2*exp(-x/T2);
  }
 }
 else
 {
-  time=-T * log(1-(cos(reset*(3.141592/180.0 ) )));
+  time=-T1 * log(1-(cos(reset*(3.141592/180.0 ) )));
  if (angle3 < reset-5){
   angle3+=5;
+  x_y=2.0;
   angles[0]=180;
+
 
   
  }
@@ -331,9 +352,10 @@ static void motion(int x, int y)
 
 
 int main(int argc, char **argv)
-{  T=atoi(argv[2]); 
+{  T1=atoi(argv[2]);
+   T2=atoi(argv[3]); 
    angle3= atoi(argv[1]);
-   time=-T * log(1-(cos(atoi(argv[1])*(3.141592/180.0  ))));
+   time=-T1 * log(1-(cos(atoi(argv[1])*(3.141592/180.0  ))));
    reset=angle3; 
 
   
